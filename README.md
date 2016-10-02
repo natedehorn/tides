@@ -22,40 +22,50 @@ Clone this repository:
 $ git clone https://github.com/natedehorn/tides.git
 ```
 
-Tides relies on DateTime, Requests, and BeautifulSoup
+Tides relies on DateTime, Requests, Plotly and BeautifulSoup
 
 To install DateTime:
 
 ```
-$ pip install datetime
+$ pip3 install datetime
 ```
 or
 ```
-$ pip install --upgrade datetime
+$ pip3 install --upgrade datetime
 ```
 
 To install Requests:
 
 ```
-$ pip install requests
+$ pip3 install requests
 ```
 or
 ```
-$ pip install --upgrade requests
+$ pip3 install --upgrade requests
+```
+
+To install Plotly:
+
+```
+$ pip3 install plotly
+```
+or
+```
+$ pip3 install --upgrade plotly
 ```
 
 To install BeautifulSoup:
 
 ```
-$ pip install BeautifulSoup
+$ pip3 install BeautifulSoup
 ```
 or
 ```
-$ pip install --upgrade BeautfulSoup
+$ pip3 install --upgrade BeautfulSoup
 ```
 
 ## Usage ##
 
 
 ```
-$ path/to/repo/ python tides.py
+$ path/to/repo/ python3 tides.py
