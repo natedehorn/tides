@@ -23,6 +23,7 @@ $ git clone https://github.com/natedehorn/tides.git
 ```
 
 Tides relies on DateTime, Requests, and BeautifulSoup
+
 To install DateTime:
 
 ```
