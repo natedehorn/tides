@@ -29,19 +29,11 @@ To install DateTime:
 ```
 $ pip3 install datetime
 ```
-or
-```
-$ pip3 install --upgrade datetime
-```
 
 To install Requests:
 
 ```
 $ pip3 install requests
-```
-or
-```
-$ pip3 install --upgrade requests
 ```
 
 To install Plotly:
@@ -49,19 +41,11 @@ To install Plotly:
 ```
 $ pip3 install plotly
 ```
-or
-```
-$ pip3 install --upgrade plotly
-```
 
 To install BeautifulSoup:
 
 ```
 $ pip3 install BeautifulSoup
-```
-or
-```
-$ pip3 install --upgrade BeautfulSoup
 ```
 
 ## Usage ##
