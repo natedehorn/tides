@@ -1,9 +1,14 @@
 import http
 import socket
 import plotly
+import smtplib
 import datetime
 import requests
 from bs4 import BeautifulSoup
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 class Date:
 	def __init__(self, month, year):
@@ -58,18 +63,15 @@ class Tides:
 		plotly.tools.set_credentials_file(
 			username = 'tidesbot',
 			api_key = 'evpcqc1vir')
-		if self.tides != null:
+		if hasattr(self, 'tides'):
 			trace = plotly.graph_objs.Scatter(
-				x = [datetime.datetime.srtptime((t.time + t.period, '%I:%M%p').strftime('%H:%M')) for t in self.tides],
+				x=[(datetime.datetime.strptime((t.time + t.period), '%I:%M%p').strftime("%H:%M")) for t in self.tides],
 				y = [t.level for t in self.tides],
 				line = dict(shape = 'spline'))
 		else:
-			try:
-				raise NoTidesError('No Tides Data')
-			except NoTidesError:
-				raise
+			print('No Tides Data')
 		layout = plotly.graph_objs.Layout(
-			title = self.site + ' Tides for ' + datetime.datetime.now().strftime('%A, %d %B %Y'),
+			title = self.station.site + ' Tides for ' + datetime.datetime.now().strftime('%A, %d %B %Y'),
 			xaxis = dict(
 				title = 'Time',
 				autotick = False,
@@ -83,8 +85,8 @@ class Tides:
 		figure = plotly.graph_objs.Figure(
 			data = [trace],
 			layout = layout)
-		plotly.plotly.image.save_as(fig,filename = self.site + '.png')
-		self.graph = self.site + '.png'
+		plotly.plotly.image.save_as(figure,filename = self.station.site + '.png')
+		self.graph = self.station.site + '.png'
 
 class Email:
 	def __init__(self, sender, password, recipient, body):
@@ -93,6 +95,17 @@ class Email:
 		self.password = password
 		self.recipient = recipient
 		self.body = body
+
+	def __repr__(self):
+		default = 'Sender : %s\nPassword: %s\nRecipient: %s\nBody: %s' % (self.sender, self.password, self.recipient, self.body)
+		if  hasattr(self, 'subject') and hasattr(self, 'filename') and hasattr(self, 'attachment'):
+			return default + '\nSubject: %s\nFilename: %s\nAttachment: %s' % (self.subject, self.filename, self.attachment)
+		elif  hasattr(self, 'filename') and hasattr(self, 'attachment'):
+			return default + '\nFilename: %s\nAttachment: %s' % (self.filename, self.attachment)
+		elif  hasattr(self, 'subject'):
+			return default + '\nSubject: %s' % (self.subject)
+		else:
+			return default
 
 	def setSubject(self, subject):
 		self.subject = subject
@@ -105,19 +118,18 @@ class Email:
 		message = MIMEMultipart()
 		message['From'] = self.sender
 		message['To'] = self.recipient
-		if self.subject != null:
+		if hasattr(self, 'subject'):
 			message['Subject'] = self.subject
 		message.attach(MIMEText(self.body, 'plain'))
-		if self.filename != null and self.attachment != null:
-			attachment = open(attachment, "rb")
+		if hasattr(self, 'filename') and hasattr(self, 'attachment'):
+			attachment = open(self.attachment, "rb")
 			part = MIMEBase('application', 'octet-stream')
-			part.set_payload((self.attachment).read())
+			part.set_payload(attachment.read())
 			encoders.encode_base64(part)
 			part.add_header('Content-Disposition', "attachment; filename= %s" % self.filename)
 			message.attach(part)
-		server = smtplib.SMTP('smtp.google.com', 587)
+		server = smtplib.SMTP('smtp.gmail.com', 587)
 		server.starttls()
 		server.login(self.sender, self.password)
-		prepared = message.as_string
-		server.sendmail(self.sender, self.recipient, prepared)
+		server.sendmail(message['From'], message['To'], message.as_string())
 		server.quit()

@@ -3,7 +3,6 @@ import datetime
 import unittest
 
 class TestTidesMethods(unittest.TestCase):
-
 	def test_station(self):
 		char_harb = tc.Station('SCarolina', '8665530')
 		self.assertEqual(str(char_harb),'SCarolina, 8665530')
@@ -30,5 +29,44 @@ class TestTidesMethods(unittest.TestCase):
 		self.assertEqual(str(ash_riv_tides[0]), 'High, 6:18, AM, 5.9')
 		self.assertEqual(str(ash_riv_tides[2].level), '5.2')
 
+	def testplot(self):
+		char_harb = tc.Station('SCarolina', '8665530')
+		char_harb_tides = tc.Tides(char_harb, tc.Date('1', '2016'))
+		char_harb_tides.plot()
+		self.assertEqual(str(char_harb_tides.graph), char_harb.site + '.png')
+
+class TestEmailMethods(unittest.TestCase):
+	def test_basic_email(self):
+		email = tc.Email('tidesbot@gmail.com','tides4all', '5742989709@mms.att.net', 'Test')
+		self.assertEqual(str(email),'Sender : tidesbot@gmail.com\nPassword: tides4all\nRecipient: 5742989709@mms.att.net\nBody: Test')
+
+	def test_subject_email(self):
+		email = tc.Email('tidesbot@gmail.com','tides4all', '5742989709@mms.att.net', 'Test')
+		email.setSubject('Test Subject')
+		self.assertEqual(str(email),'Sender : tidesbot@gmail.com\nPassword: tides4all\nRecipient: 5742989709@mms.att.net\nBody: Test\nSubject: Test Subject')
+
+	def test_complete_email(self):
+		email = tc.Email('tidesbot@gmail.com','tides4all', '5742989709@mms.att.net', 'Test')
+		email.setSubject('Test Subject')
+		email.attach('Test.png', 'Test.png')
+		self.assertEqual(str(email),'Sender : tidesbot@gmail.com\nPassword: tides4all\nRecipient: 5742989709@mms.att.net\nBody: Test\nSubject: Test Subject\nFilename: Test.png\nAttachment: Test.png')
+
+	def test_send_basic_email(self):
+		email = tc.Email('tidesbot@gmail.com','tides4all', '5742989709@mms.att.net', 'Test')
+		email.send()
+		
+	def test_send_subject_email(self):
+		email = (tc.Email('tidesbot@gmail.com','tides4all', '5742989709@mms.att.net', 'Test'))
+		email.setSubject('Test Subject')
+		email.send()
+		
+	def test_send_complete_email(self):
+		email = (tc.Email('tidesbot@gmail.com','tides4all', '5742989709@mms.att.net', 'Test'))
+		email.setSubject('Test Subject')
+		email.attach('Test.png', 'Test.png')
+		email.send()
+		
 if __name__ == '__main__':
 	unittest.main()
+	unittest.installHandler()
+	unittest.registerResult(result)
