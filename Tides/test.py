@@ -24,6 +24,11 @@ class TestEmailMethods(unittest.TestCase):
 		email = tc.Email('tidesbot@gmail.com','tides4all', '5742989709@mms.att.net', 'Test')
 		self.assertEqual(str(email),'Sender : tidesbot@gmail.com\nPassword: tides4all\nRecipient: 5742989709@mms.att.net\nBody: Test')
 
+	def test_attachment_email(self):
+		email = tc.Email('tidesbot@gmail.com','tides4all', '5742989709@mms.att.net', 'Test')
+		email.attach('Test.png', 'Test.png')
+		self.assertEqual(str(email),'Sender : tidesbot@gmail.com\nPassword: tides4all\nRecipient: 5742989709@mms.att.net\nBody: Test\nFilename: Test.png\nAttachment: Test.png')
+
 	def test_subject_email(self):
 		email = tc.Email('tidesbot@gmail.com','tides4all', '5742989709@mms.att.net', 'Test')
 		email.setSubject('Test Subject')
@@ -45,10 +50,9 @@ class TestEmailMethods(unittest.TestCase):
 		phoneadd = '5742989709@mms.att.net'
 		emailbod = str(tides.tides)
 		email = tc.Email(emailadd, password, phoneadd, emailbod)
+		email.setSubject('Tides for ' + str(now))
 		email.attach(tides.station.site + '.png', tides.graph)
 		email.send()
 		
 if __name__ == '__main__':
 	unittest.main()
-	unittest.installHandler()
-	unittest.registerResult(result)

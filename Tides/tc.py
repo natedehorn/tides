@@ -34,18 +34,8 @@ class Tides(object):
 	def __init__(self, station, date):
 		self.station = station
 		self.date = date
-		test_con_url = 'www.google.com'
-		test_con_resouce = '/intl/en/'
-		test_con = http.client.HTTPConnection(test_con_url)
-		# ensure network connection
-		try:
-			test_con.request('GET', test_con_resouce)
-		except Exception:
-			print('Not connected to internet')
-		else:
-			self.get()
-			self.plot()
-		test_con.close()
+		self.get()
+		self.plot()
 
 	def get(self):
 		request = str('site=' + self.station.site 
@@ -68,8 +58,6 @@ class Tides(object):
 				x=[(datetime.datetime.strptime((t.time + t.period), '%I:%M%p').strftime("%H:%M")) for t in self.tides],
 				y = [t.level for t in self.tides],
 				line = dict(shape = 'spline'))
-		else:
-			print('No Tides Data')
 		layout = plotly.graph_objs.Layout(
 			title = self.station.site + ' Tides for ' + datetime.datetime.now().strftime('%A, %d %B %Y'),
 			xaxis = dict(
