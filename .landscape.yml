@@ -1,0 +1,5 @@
+strictness: high
+requirements:
+  - requirements.txt
+python-targets:
+  - 3
