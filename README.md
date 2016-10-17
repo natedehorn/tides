@@ -47,7 +47,7 @@ $ pip3 install plotly
 To install BeautifulSoup:
 
 ```
-$ pip3 install BeautifulSoup
+$ pip3 install bs4
 ```
 
 ## Usage ##

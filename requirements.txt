@@ -1,4 +1,4 @@
 datetime
 requests
 plotly
-BeautifulSoup
+bs4
