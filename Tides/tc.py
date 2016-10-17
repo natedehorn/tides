@@ -121,9 +121,9 @@ class Email(object):
 			message['Subject'] = self.subject
 		message.attach(MIMEText(self.body, 'plain'))
 		if hasattr(self, 'filename') and hasattr(self, 'attachment'):
-			attachment = open(self.attachment, "rb")
 			part = MIMEBase('application', 'octet-stream')
-			part.set_payload(attachment.read())
+			with open(self.attachment, 'rb') as f:
+				part.set_payload(f.read())
 			encoders.encode_base64(part)
 			part.add_header('Content-Disposition', "attachment; filename= %s" % self.filename)
 			message.attach(part)
