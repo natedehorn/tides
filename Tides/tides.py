@@ -9,7 +9,7 @@ tides = tc.Tides(station, tc.Date(now.month,now.year))
 
 emailadd = 'tidesbot@gmail.com'
 password = 'tides4all'
-phoneadd = 'phonenumber@mms.att.net'
+phoneadd = '5742989709@mms.att.net'
 emailbod = str(tides.tides)
 
 email = tc.Email(emailadd, password, phoneadd, emailbod)
