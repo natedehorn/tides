@@ -2,3 +2,5 @@
 *.png
 
 Tides/.cache/v/cache/lastfailed
+
+Tides/.coverage

@@ -6,4 +6,5 @@ python:
 install:
   - pip3 install -r requirements.txt
 script:
-  - python3 Tides/test.py
+  - coverage run Tides/test.py
+  - coverage report -m
