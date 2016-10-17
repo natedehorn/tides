@@ -1,5 +1,4 @@
 import http
-import socket
 import plotly
 import smtplib
 import datetime
@@ -10,23 +9,20 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-class Date:
+class Date(object):
 	def __init__(self, month, year):
-		super(Date, self).__init__()
 		self.month = month
 		self.year = year
 
-class Station:
+class Station(object):
 	def __init__(self, site, station_number):
-		super(Station, self).__init__()
 		self.site = site
 		self.station_number = station_number
 	def __repr__(self):
 		return self.site + ', ' + self.station_number
 		
-class Tide:
+class Tide(object):
 		def __init__(self, phase, time, period, level):
-			super(Tide, self).__init__()
 			self.phase = phase
 			self.time = time
 			self.period = period
@@ -34,9 +30,8 @@ class Tide:
 		def __repr__(self):
 			return self.phase + ', ' + self.time + ', ' + self.period + ', ' + self.level
 
-class Tides:
+class Tides(object):
 	def __init__(self, station, date):
-		super(Tides, self).__init__()
 		self.station = station
 		self.date = date
 		test_con_url = 'www.google.com'
@@ -45,15 +40,15 @@ class Tides:
 		# ensure network connection
 		try:
 			test_con.request('GET', test_con_resouce)
-			response = test_con.getresponse()
 		except Exception as e:
 			print('Not connected to internet')
 		else:
 			self.get()
+			self.plot()
 		test_con.close()
 
 	def get(self):
-		request = 'site=' + self.station.site + '&station_number=' + self.station.station_number + '&month=' + self.date.month + '&year=' + self.date.year + '&start_date=' + str(datetime.datetime.now().day) + '&maximum_days=' + '1'
+		request = 'site=' + self.station.site + '&station_number=' + str(self.station.station_number) + '&month=' + str(self.date.month) + '&year=' + str(self.date.year) + '&start_date=' + str(datetime.datetime.now().day) + '&maximum_days=' + '1'
 		soup = BeautifulSoup(requests.post('http://www.saltwatertides.com/cgi-bin/seatlantic.cgi', request).text, 'html.parser')
 		lines = (((soup.find('pre').text)[(soup.find('pre').text.find(str(datetime.datetime.now().day))):]).splitlines())
 		lines.pop()
@@ -88,9 +83,8 @@ class Tides:
 		plotly.plotly.image.save_as(figure,filename = self.station.site + '.png')
 		self.graph = self.station.site + '.png'
 
-class Email:
+class Email(object):
 	def __init__(self, sender, password, recipient, body):
-		super(Email, self).__init__()
 		self.sender = sender
 		self.password = password
 		self.recipient = recipient

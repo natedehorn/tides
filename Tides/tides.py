@@ -1,10 +1,17 @@
 import datetime
+import tc
 
 now = datetime.datetime.now()
-today = str(now.day)
+charleston = tc.Station('SCarolina', '8665099')
+
+station = charleston
+tides = tc.Tides(station, tc.Date(now.month,now.year))
+
 emailadd = 'tidesbot@gmail.com'
 password = 'tides4all'
-phoneadd = '<Phone Numbber>@mms.att.net'
-emailbod = '<Body>'
+phoneadd = 'phonenumber@mms.att.net'
+emailbod = str(tides.tides)
 
-# TODO - create email, send
+email = tc.Email(emailadd, password, phoneadd, emailbod)
+email.attach(tides.station.site + '.png', tides.graph)
+email.send()

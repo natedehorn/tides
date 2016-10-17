@@ -15,6 +15,8 @@
 # Tides #
 A text service to send a daily tide schedule based on location
 
+[![Code Health](https://landscape.io/github/natedehorn/tides/master/landscape.svg?style=flat)](https://landscape.io/github/natedehorn/tides/master)
+
 ## Installation ##
 
 Clone this repository:
