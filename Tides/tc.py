@@ -40,7 +40,7 @@ class Tides(object):
 		# ensure network connection
 		try:
 			test_con.request('GET', test_con_resouce)
-		except Exception:
+		except Exception as e:
 			print('Not connected to internet')
 		else:
 			self.get()
@@ -48,12 +48,7 @@ class Tides(object):
 		test_con.close()
 
 	def get(self):
-		request = 'site=' + self.station.site 
-				+ '&station_number=' + str(self.station.station_number) 
-				+ '&month=' + str(self.date.month) 
-				+ '&year=' + str(self.date.year) 
-				+ '&start_date=' + str(datetime.datetime.now().day) 
-				+ '&maximum_days=' + '1'
+		request = 'site=' + self.station.site + '&station_number=' + str(self.station.station_number) + '&month=' + str(self.date.month) + '&year=' + str(self.date.year) + '&start_date=' + str(datetime.datetime.now().day) + '&maximum_days=' + '1'
 		soup = BeautifulSoup(requests.post('http://www.saltwatertides.com/cgi-bin/seatlantic.cgi', request).text, 'html.parser')
 		lines = (((soup.find('pre').text)[(soup.find('pre').text.find(str(datetime.datetime.now().day))):]).splitlines())
 		lines.pop()
