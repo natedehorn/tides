@@ -1,15 +1,18 @@
 import datetime
 import tc
 
-now = datetime.datetime.now()
-charleston = tc.Station('SCarolina', '8665099')
+NOW = datetime.datetime.now()
+CHARLESTON = tc.Station('SCarolina', '8665099')
 
-station = charleston
-tides = tc.Tides(station, tc.Date(now.month,now.year))
+STATION = CHARLESTON
+tides = tc.Tides(STATION, tc.Date(NOW.month,NOW.year))
 
-emailadd = 'tidesbot@gmail.com'
-password = 'tides4all'
-phoneadd = '5742989709@mms.att.net'
+with open('email.info','r+') as f:
+	info = f.readlines()
+emailadd = info[0]
+password = info[1]
+phoneadd = info[2]
+emailsub = str(tides)
 emailbod = str(tides.tides)
 
 email = tc.Email(emailadd, password, phoneadd, emailbod)
