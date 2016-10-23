@@ -132,7 +132,7 @@ class TestEmail(unittest.TestCase):
 		with open('email.info','r+') as FILE:
 			INFO = FILE.readlines()
 		EMAIL_INFO = tc.EmailInfo(INFO[0], INFO[1], INFO[2])
-		EMAIL = tc.Email(EMAIL_INFO, 'Test Subject', 'Test Body')
+		EMAIL = tc.Email(EMAIL_INFO, SUBJECT, BODY)
 		EMAIL.attach(TIDES.station.site + '.png', TIDES.graph)
 		EMAIL.send()
 
