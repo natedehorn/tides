@@ -8,7 +8,7 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-class Date(object):
+class Date:
 	def __init__(self, day, month, year):
 		self.day = day
 		self.month = month
@@ -17,7 +17,7 @@ class Date(object):
 	def __repr__(self):
 		return '%s %s %s' % (self.day, self.month, self.year)
 
-class Station(object):
+class Station:
 	def __init__(self, site, station_number):
 		self.site = site
 		self.station_number = station_number
@@ -25,7 +25,7 @@ class Station(object):
 	def __repr__(self):
 		return self.site + ', ' + self.station_number
 		
-class Tide(object):
+class Tide:
 	def __init__(self, phase, time, period, level):
 		self.phase = phase
 		self.time = time
@@ -35,7 +35,7 @@ class Tide(object):
 	def __repr__(self):
 		return self.phase + ', ' + self.time + ', ' + self.period + ', ' + self.level
 
-class Tides(object):
+class Tides:
 	def __init__(self, station, date):
 		self.station = station
 		self.date = date
@@ -79,7 +79,7 @@ class Tides(object):
 		self.graph = self.station.site + '.png'
 		plotly.plotly.image.save_as(figure, filename=self.graph)
 		
-class EmailInfo(object):
+class EmailInfo:
 	def __init__(self, sender, password, recipient):
 		self.sender = sender
 		self.password = password
@@ -87,23 +87,30 @@ class EmailInfo(object):
 
 	def __repr__(self):
 		return 'Sender : %s\nPassword: %s\nRecipient: %s' % (self.sender, self.password, self.recipient)
+
+class Attachment:
+	def __init__(self, filename, file):
+		self.filename = filename
+		self.file = file
+
+	def __repr__(self):
+		return 'Filename: %s\nFile: %s' % (self.filename, self.file)
 		
-class Email(object):
-	def __init__(self, emailInfo, subject, body):
-		self.emailInfo = emailInfo
-		self.subject = subject
-		self.body = body
+class Email:
+	def __init__(self, argv):
+		assert len(argv) == 3 or len(argv) == 4
+		self.emailInfo = argv[0]
+		self.subject = argv[1]
+		self.body = argv[2]
+		if len(argv) == 4:
+			self.attachment = argv[3]
 
 	def __repr__(self):
 		default = str(self.emailInfo) + '\nSubject: %s\nBody: %s' % (self.subject, self.body)
-		if hasattr(self, 'filename') and hasattr(self, 'attachment'):
-			return default + '\nFilename: %s\nAttachment: %s' % (self.filename, self.attachment)
+		if hasattr(self, 'attachment'):
+			return default + '\n' + str(self.attachment)
 		else:
 			return default
-
-	def attach(self, filename, attachment):
-		self.filename = filename
-		self.attachment = attachment
 
 	def send(self):
 		message = MIMEMultipart()
@@ -111,15 +118,16 @@ class Email(object):
 		message['To'] = self.emailInfo.recipient
 		message['Subject'] = self.subject
 		message.attach(MIMEText(self.body, 'plain'))
-		if hasattr(self, 'filename') and hasattr(self, 'attachment'):
+		if hasattr(self, 'attachment'):
 			part = MIMEBase('application', 'octet-stream')
-			with open(self.attachment, 'rb') as f:
+			with open(self.attachment.file, 'rb') as f:
 				part.set_payload(f.read())
 			encoders.encode_base64(part)
-			part.add_header('Content-Disposition', "attachment; filename= %s" % self.filename)
+			part.add_header('Content-Disposition', "attachment; filename= %s" % self.attachment.filename)
 			message.attach(part)
 		server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
 		server.ehlo()
 		server.login(self.emailInfo.sender, self.emailInfo.password)
 		server.sendmail(message['From'], message['To'], message.as_string())
 		server.quit()
+

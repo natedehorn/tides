@@ -65,25 +65,52 @@ class TestTides(unittest.TestCase):
 
 class TestEmailInfo(unittest.TestCase):
 	def test_repr(self):
-		pass
+		with open('email.info','r+') as FILE:
+			TEST_INFO = FILE.readlines()
+		TEST_EMAIL_INFO = tc.EmailInfo(TEST_INFO[0], TEST_INFO[1], TEST_INFO[2])
+		self.assertEqual(str(TEST_EMAIL_INFO), str('Sender : %s\nPassword: %s\nRecipient: %s' % (TEST_INFO[0], TEST_INFO[1], TEST_INFO[2])))
+
 	def test_attributes(self):
-		pass
+		with open('email.info','r+') as FILE:
+			TEST_INFO = FILE.readlines()
+		TEST_EMAIL_INFO = tc.EmailInfo(TEST_INFO[0], TEST_INFO[1], TEST_INFO[2])
+		self.assertTrue(hasattr(TEST_EMAIL_INFO, 'sender'))
+		self.assertTrue(hasattr(TEST_EMAIL_INFO, 'password'))
+		self.assertTrue(hasattr(TEST_EMAIL_INFO, 'recipient'))
+
 	def test_type(self):
-		pass
+		with open('email.info','r+') as FILE:
+			TEST_INFO = FILE.readlines()
+		TEST_EMAIL_INFO = tc.EmailInfo(TEST_INFO[0], TEST_INFO[1], TEST_INFO[2])
+		self.assertIs(type(TEST_EMAIL_INFO), tc.EmailInfo)
+
+class TestAttachment(unittest.TestCase):
+	def test_repr(self):
+		TEST_ATTACHMENT = tc.Attachment('Test.png', 'Test.png')
+		self.assertEqual(str(TEST_ATTACHMENT), str('Filename: Test.png\nFile: Test.png'))
+
+	def test_attributes(self):
+		TEST_ATTACHMENT = tc.Attachment('Test.png', 'Test.png')
+		self.assertTrue(hasattr(TEST_ATTACHMENT, 'filename'))
+		self.assertTrue(hasattr(TEST_ATTACHMENT, 'file'))
+
+	def test_type(self):
+		TEST_ATTACHMENT = tc.Attachment('Test.png', 'Test.png')
+		self.assertIs(type(TEST_ATTACHMENT), tc.Attachment)
 
 class TestEmail(unittest.TestCase):
 	def test_basic_repr(self):
 		with open('email.info','r+') as FILE:
 			TEST_INFO = FILE.readlines()
 		TEST_EMAIL_INFO = tc.EmailInfo(TEST_INFO[0], TEST_INFO[1], TEST_INFO[2])
-		TEST_EMAIL = tc.Email(TEST_EMAIL_INFO, 'Test Subject', 'Test Body')
+		TEST_EMAIL = tc.Email([TEST_EMAIL_INFO, 'Test Subject', 'Test Body'])
 		self.assertEqual(str(TEST_EMAIL), 'Sender : %s\nPassword: %s\nRecipient: %s\nSubject: %s\nBody: %s' % (TEST_INFO[0], TEST_INFO[1], TEST_INFO[2], 'Test Subject', 'Test Body'))
 
 	def test_basic_attributes(self):
 		with open('email.info','r+') as FILE:
 			TEST_INFO = FILE.readlines()
 		TEST_EMAIL_INFO = tc.EmailInfo(TEST_INFO[0], TEST_INFO[1], TEST_INFO[2])
-		TEST_EMAIL = tc.Email(TEST_EMAIL_INFO, 'Test Subject', 'Test Body')
+		TEST_EMAIL = tc.Email([TEST_EMAIL_INFO, 'Test Subject', 'Test Body'])
 		self.assertTrue(hasattr(TEST_EMAIL, 'emailInfo'))
 		self.assertEqual(str(TEST_EMAIL.subject), 'Test Subject')
 		self.assertEqual(str(TEST_EMAIL.body), 'Test Body')
@@ -92,35 +119,35 @@ class TestEmail(unittest.TestCase):
 		with open('email.info','r+') as FILE:
 			TEST_INFO = FILE.readlines()
 		TEST_EMAIL_INFO = tc.EmailInfo(TEST_INFO[0], TEST_INFO[1], TEST_INFO[2])
-		TEST_EMAIL = tc.Email(TEST_EMAIL_INFO, 'Test Subject', 'Test Body')
+		TEST_EMAIL = tc.Email([TEST_EMAIL_INFO, 'Test Subject', 'Test Body'])
 		self.assertIs(type(TEST_EMAIL), tc.Email)
 		
 	def test_attach_repr(self):
 		with open('email.info','r+') as FILE:
 			TEST_INFO = FILE.readlines()
 		TEST_EMAIL_INFO = tc.EmailInfo(TEST_INFO[0], TEST_INFO[1], TEST_INFO[2])
-		TEST_EMAIL = tc.Email(TEST_EMAIL_INFO, 'Test Subject', 'Test Body')
-		TEST_EMAIL.attach('Test.png', 'Test.png')
-		self.assertEqual(str(TEST_EMAIL), str('Sender : %s\nPassword: %s\nRecipient: %s\nSubject: Test Subject\nBody: Test Body\nFilename: Test.png\nAttachment: Test.png' % (TEST_INFO[0], TEST_INFO[1], TEST_INFO[2])))
+		TEST_ATTACHMENT = tc.Attachment('Test.png', 'Test.png')
+		TEST_EMAIL = tc.Email([TEST_EMAIL_INFO, 'Test Subject', 'Test Body', TEST_ATTACHMENT])
+		self.assertEqual(str(TEST_EMAIL), str('Sender : %s\nPassword: %s\nRecipient: %s\nSubject: Test Subject\nBody: Test Body\nFilename: Test.png\nFile: Test.png' % (TEST_INFO[0], TEST_INFO[1], TEST_INFO[2])))
 
 	def test_attach_attributes(self):
 		with open('email.info','r+') as FILE:
 			TEST_INFO = FILE.readlines()
 		TEST_EMAIL_INFO = tc.EmailInfo(TEST_INFO[0], TEST_INFO[1], TEST_INFO[2])
-		TEST_EMAIL = tc.Email(TEST_EMAIL_INFO, 'Test Subject', 'Test Body')
-		TEST_EMAIL.attach('Test.png', 'Test.png')
+		TEST_ATTACHMENT = tc.Attachment('Test.png', 'Test.png')
+		TEST_EMAIL = tc.Email([TEST_EMAIL_INFO, 'Test Subject', 'Test Body', TEST_ATTACHMENT])
 		self.assertTrue(hasattr(TEST_EMAIL, 'emailInfo'))
 		self.assertEqual(str(TEST_EMAIL.subject), 'Test Subject')
 		self.assertEqual(str(TEST_EMAIL.body), 'Test Body')
-		self.assertEqual(str(TEST_EMAIL.filename), 'Test.png')
-		self.assertEqual(str(TEST_EMAIL.attachment), 'Test.png')
+		self.assertEqual(str(TEST_EMAIL.attachment.filename), 'Test.png')
+		self.assertEqual(str(TEST_EMAIL.attachment.file), 'Test.png')
 
 	def test_attach_type(self):
 		with open('email.info','r+') as FILE:
 			TEST_INFO = FILE.readlines()
 		TEST_EMAIL_INFO = tc.EmailInfo(TEST_INFO[0], TEST_INFO[1], TEST_INFO[2])
-		TEST_EMAIL = tc.Email(TEST_EMAIL_INFO, 'Test Subject', 'Test Body')
-		TEST_EMAIL.attach('Test.png', 'Test.png')
+		TEST_ATTACHMENT = tc.Attachment('Test.png', 'Test.png')
+		TEST_EMAIL = tc.Email([TEST_EMAIL_INFO, 'Test Subject', 'Test Body', TEST_ATTACHMENT])
 		self.assertIs(type(TEST_EMAIL), tc.Email)
 
 	def test_send_email(self):
@@ -132,8 +159,8 @@ class TestEmail(unittest.TestCase):
 		with open('email.info','r+') as FILE:
 			INFO = FILE.readlines()
 		EMAIL_INFO = tc.EmailInfo(INFO[0], INFO[1], INFO[2])
-		EMAIL = tc.Email(EMAIL_INFO, SUBJECT, BODY)
-		EMAIL.attach(TIDES.station.site + '.png', TIDES.graph)
+		ATTACHMENT = tc.Attachment(TIDES.station.site + '.png', TIDES.graph)
+		EMAIL = tc.Email([EMAIL_INFO, SUBJECT, BODY, ATTACHMENT])
 		EMAIL.send()
 
 if __name__ == '__main__':
