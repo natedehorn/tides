@@ -26,8 +26,9 @@ $ git clone https://github.com/natedehorn/tides.git
 ```
 
 Tides relies on DateTime, Requests, Plotly and BeautifulSoup, found in requirements.txt:
-
+```
 $ pip3 install -r requirements.txt
+```
 
 ## Usage ##
 
