@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <title>tides</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/css/bootstrap-select.min.css"/>
+        <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/js/bootstrap-select.min.js"></script>
+        <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+    <div class="container"> 
+        <h2 style="text-align: center;">Tides</h2>
+        <h4 style="text-align: center;">To have tides sent to you each day for a given location, input your info below</h4>
+        <form  action="" method="post" role="form">
+            <div class="form-group">
+                <input type="text" class="form-control" name="name" placeholder="What's your name?"><br>
+                <select class="form-control selectpicker show-tick" data-show-subtext="true"  name="state">
+                    <option selected disabled>Select your state</option>
+                    <option value="Alabama" data-subtext="15 sites">Alabama</option>
+                    <option value="California" data-subtext="195 sites">California</option>
+                    <option value="Connecticut" data-subtext="40 sites">Connecticut</option>
+                    <option value="Delaware" data-subtext="34 sites">Delaware</option>
+                    <option value="DelJerseyRiver" data-subtext="54 sites">Delaware River</option>
+                    <option value="FloridaAtlantic" data-subtext="106 sites">Florida Atlantic Coast</option>
+                    <option value="FloridaGulf" data-subtext="118 sites">Florida Gulf Coast</option>
+                    <option value="FloridaKeys" data-subtext="168 sites">Florida Keys</option>
+                    <option value="NassauGeorge" data-subtext="14 sites">Florida, Nassau Sound and Fort George River</option>
+                    <option value="StJohns" data-subtext="32 sites">Florida, St. Johns River</option>
+                    <option value="TampaBay" data-subtext="21 sites">Florida, Tampa Bay</option>
+                    <option value="Georgia" data-subtext="97 sites">Georgia</option>
+                    <option value="Louisiana" data-subtext="56 sites">Louisiana</option>
+                    <option value="Maine" data-subtext="118 sites">Maine and New Hampshire</option>
+                    <option value="Maryland" data-subtext="108 sites">Maryland</option>
+                    <option value="Massachusetts" data-subtext="92 sites">Massachusetts</option>
+                    <option value="Mississippi" data-subtext="17 sites">Mississippi</option>
+                    <option value="JerseyYork" data-subtext="219 sites">New Jersey</option>
+                    <option value="NewYork" data-subtext="145 sites">New York</option>
+                    <option value="NCarolina" data-subtext="70 sites">North Carolina</option>
+                    <option value="Oregon" data-subtext="48 sites">Oregon</option>
+                    <option value="Potomac" data-subtext="34 sites">Potomac River</option>
+                    <option value="Rhode" data-subtext="32 sites">Rhode Island</option>
+                    <option value="SCarolina" data-subtext="252 sites">South Carolina</option>
+                    <option value="Texas" data-subtext="35 sites">Texas</option>
+                    <option value="VirMary" data-subtext="128 sites">Virginia</option>
+                    <option value="Washington" data-subtext="162 sites">Washington</option>
+                </select><br><br>
+                <input type="text" class="form-control" name="station_number" placeholder="Enter the station number to recieve tide data from">
+                <small>If you don't know this number, it can be found <a href="http://tidesandcurrents.noaa.gov/tide_predictions.html">here.</a></small><br><br>
+                <input type="text" class="form-control" name="phone" placeholder="What's your phone number?"><br>
+                <p>Who is your service provider?</p>
+                <div class="radio">
+                    <div class="row">
+                        <div class="col-sm-2"><label><input id="staff_radio" type="radio" name="service" value="mms.att.net"> AT&T</label></div>
+                        <div class="col-sm-2"><label><input id="staff_radio" type="radio" name="service" value="messaging.sprintpcs.com"> Sprint</label></div>
+                        <div class="col-sm-2"><label><input id="staff_radio" type="radio" name="service" value="tmomail.net"> T-Mobile</label></div>
+                        <div class="col-sm-2"><label><input id="staff_radio" type="radio" name="service" value="vtext.com"> Verizon</label></div>
+                        <div class="col-sm-2"><label><input id="staff_radio" type="radio" name="service" value="vmobl.com"> Virgin Mobile</label></div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success">Sign Up</button>
+        </form>
+        <br>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for message in messages %}
+                    {% if "Error" not in message[1]: %}
+                        <div class="alert alert-info">
+                            <strong>Success! </strong> {{ message[1] }}
+                        </div>
+                    {% endif %}
+
+                    {% if "Error" in message[1]: %}
+                        <div class="alert alert-warning">
+                            {{ message[1] }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <br>
+        <footer>Built by Nate DeHorn</footer>
+    </div>
+
+</body>
+</html>
