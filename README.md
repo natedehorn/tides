@@ -34,3 +34,4 @@ $ pip3 install -r requirements.txt
 
 ```
 $ path/to/repo/ python3 Tides/tides.py
+```

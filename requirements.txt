@@ -3,3 +3,5 @@ requests
 plotly
 bs4
 coverage
+flask-sqlalchemy
+psycopg2
