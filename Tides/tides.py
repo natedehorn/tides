@@ -27,9 +27,9 @@ class UserInfo(db.Model):
         self.service = service
 
     def __repr__(self):
-        return '<Name %r>' % self.name
+    	return("<%s, %s, %s, %s, %s>" % (self.name, self.state, self.station_number, self.phone, self.service))
 
-class ReusableForm(Form):
+class TideForm(Form):
 	name = TextField(validators=[validators.required()])
 	state = TextField(validators=[validators.required()])
 	station_number = TextField(validators=[validators.required()])
@@ -38,22 +38,27 @@ class ReusableForm(Form):
  
 @app.route("/", methods=['GET', 'POST'])
 def form():
-	form = ReusableForm(request.form)
+	form = TideForm(request.form)
 	print(form.errors)
 	if request.method == 'POST':
-		if form.validate():
-			name=request.form['name']
-			state=request.form['state']
-			station_number=request.form['station_number']
-			phone=request.form['phone']
-			service=request.form['service']
-			newuser = UserInfo(name, state, station_number, phone, service)
-			db.session.add(newuser)
-			db.session.commit()
-			print(name, state, station_number, phone, service)
-			flash('Thanks for registration ' + name)
-		else:
-			flash('Error: All the form fields are required.')
+		if request.form['submit'] == 'Sign Up':
+			if form.validate():
+				name=request.form['name']
+				state=request.form['state']
+				station_number=request.form['station_number']
+				phone=request.form['phone']
+				service=request.form['service']
+				newuser = UserInfo(name, state, station_number, phone, service)
+				db.session.add(newuser)
+				db.session.commit()
+				print(name, state, station_number, phone, service)
+				flash('Thanks for registration ' + name)
+			else:
+				flash('Error: All the form fields are required.')
+
+		if request.form['submit'] == 'Delete':
+			pass
+		
  
 	return render_template('index.html', form=form)
  
