@@ -111,7 +111,7 @@ class TestEmail(unittest.TestCase):
 			TEST_INFO = FILE.readlines()
 		TEST_EMAIL_INFO = tc.EmailInfo(TEST_INFO[0], TEST_INFO[1], TEST_INFO[2])
 		TEST_EMAIL = tc.Email([TEST_EMAIL_INFO, 'Test Subject', 'Test Body'])
-		self.assertTrue(hasattr(TEST_EMAIL, 'emailInfo'))
+		self.assertTrue(hasattr(TEST_EMAIL, 'emailinfo'))
 		self.assertEqual(str(TEST_EMAIL.subject), 'Test Subject')
 		self.assertEqual(str(TEST_EMAIL.body), 'Test Body')
 
@@ -136,7 +136,7 @@ class TestEmail(unittest.TestCase):
 		TEST_EMAIL_INFO = tc.EmailInfo(TEST_INFO[0], TEST_INFO[1], TEST_INFO[2])
 		TEST_ATTACHMENT = tc.Attachment('Test.png', 'Test.png')
 		TEST_EMAIL = tc.Email([TEST_EMAIL_INFO, 'Test Subject', 'Test Body', TEST_ATTACHMENT])
-		self.assertTrue(hasattr(TEST_EMAIL, 'emailInfo'))
+		self.assertTrue(hasattr(TEST_EMAIL, 'emailinfo'))
 		self.assertEqual(str(TEST_EMAIL.subject), 'Test Subject')
 		self.assertEqual(str(TEST_EMAIL.body), 'Test Body')
 		self.assertEqual(str(TEST_EMAIL.attachment.filename), 'Test.png')

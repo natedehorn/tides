@@ -5,3 +5,4 @@ bs4
 coverage
 flask-sqlalchemy
 psycopg2
+matplotlib

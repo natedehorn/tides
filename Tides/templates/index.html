@@ -109,9 +109,14 @@
 		{% with messages = get_flashed_messages(with_categories=true) %}
 			{% if messages %}
 				{% for message in messages %}
-					{% if "Error" not in message[1]: %}
-					<div class="alert alert-info">
+					{% if "Thanks" in message[1]: %}
+					<div class="alert alert-success">
 						<strong>Success! </strong> {{ message[1] }}
+					</div>
+					{% endif %}
+					{% if "sorry" in message[1]: %}
+					<div class="alert alert-danger">
+						<strong>Oh man! </strong> {{ message[1] }}
 					</div>
 					{% endif %}
 					{% if "Error" in message[1]: %}
