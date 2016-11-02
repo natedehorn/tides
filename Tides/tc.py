@@ -2,13 +2,15 @@ import plotly
 import smtplib
 import datetime
 import requests
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as pyp
 from bs4 import BeautifulSoup
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-matplotlib.use('Agg')
+
 
 class Date:
 	def __init__(self, day, month, year):
