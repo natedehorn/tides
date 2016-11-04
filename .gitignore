@@ -1,6 +1,3 @@
 *.pyc
 *.png
-
-Tides/.cache/v/cache/lastfailed
-
 .coverage

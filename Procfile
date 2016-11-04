@@ -1,1 +1,1 @@
-web: python3 Tides/tides.py
+web: gunicorn tides:app
