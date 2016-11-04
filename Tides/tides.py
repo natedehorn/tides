@@ -7,8 +7,8 @@ DEBUG = True
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 APP = Flask(__name__)
 APP.config.from_object(__name__)
-APP.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://qaeotcbasbnjnm:qNv1Ogfn2qOTlUSzfQG1ezNV1a@ec2-54-243-47-83.compute-1.amazonaws.com:5432/dcjfootut9klik'
-APP.config['SECRET_KEY'] = '7d441f27d441f27567d441f2b6176a'
+APP.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://uqhlbrxcxuhbyq:_FbOqODzPCsqf583Dwvl8G0zH3@ec2-54-163-240-101.compute-1.amazonaws.com:5432/dacudo927bqbve'
+APP.config['SECRET_KEY'] = '_FbOqODzPCsqf583Dwvl8G0zH3'
 DB = SQLAlchemy(APP)
 
 # Create our database model
