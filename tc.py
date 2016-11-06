@@ -48,14 +48,18 @@ class Tides:
 		self.plotnew()
 
 	def get(self):
-		request = str('site=%s&station_number=%s&month=%s&year=%s&start_date=%s&maximum_days=1' % (str(self.station.site), str(self.station.station_number), str(self.date.month), str(self.date.year), str(self.date.day)))
-		soup = BeautifulSoup(requests.post('http://www.saltwatertides.com/cgi-bin/seatlantic.cgi', request).text, 'html.parser')
+		request = str('site=%s&station_number=%s&month=%s&year=%s&start_date=%s&maximum_days=1' 
+			% (str(self.station.site), str(self.station.station_number),
+			str(self.date.month), str(self.date.year), str(self.date.day)))
+		url = 'http://www.saltwatertides.com/cgi-bin/seatlantic.cgi'
+		soup = BeautifulSoup(requests.post(url, request).text, 'html.parser')
 		lines = ((soup.find('pre').text)[soup.find('pre').text.find(str(self.date.day)):]).splitlines()
 		lines.pop()
-		self.tides = [Tide(*l) for l in [line.strip()[len(str(self.date.day)):].strip().split()[:4] for line in lines]]
+		self.tides = [Tide(*l) for l in 
+			[line.strip()[len(str(self.date.day)):].strip().split()[:4] for line in lines]]
 		
 	def plot(self):
-		with open('plotly.info','r+') as file:
+		with open('plotly.info', 'r+') as file:
 			info = file.read().splitlines()
 		plotly.tools.set_credentials_file(
 			username=info[0],
@@ -63,9 +67,10 @@ class Tides:
 
 		if hasattr(self, 'tides'):
 			trace = plotly.graph_objs.Scatter(
-				x=[(datetime.datetime.strptime((t.time + t.period), '%I:%M%p').strftime("%H:%M")) for t in self.tides],
+				x=[(datetime.datetime.strptime((t.time + t.period),
+					'%I:%M%p').strftime("%H:%M")) for t in self.tides],
 				y=[t.level for t in self.tides],
-				line=dict(shape = 'spline'))
+				line=dict(shape='spline'))
 		layout = plotly.graph_objs.Layout(
 			title=self.station.site + ' Tides for ' + datetime.datetime.now().strftime('%A, %d %B %Y'),
 			xaxis=dict(
@@ -75,10 +80,10 @@ class Tides:
 				tick0=0,
 				dtick=1),
 			yaxis=dict(title='Height (ft)'),
-			font=dict(family='Open Sans, monospace', size=18,color='#404040'),
+			font=dict(family='Open Sans, monospace', size=18, color='#404040'),
 			width=600,
 			height=420)
-		figure=plotly.graph_objs.Figure(
+		figure = plotly.graph_objs.Figure(
 			data=[trace],
 			layout=layout)
 		self.graph = self.station.site + '.png'
@@ -86,11 +91,13 @@ class Tides:
 
 	def plotnew(self):
 		if hasattr(self, 'tides'):
-			title=self.station.site + ' Tides for ' + datetime.datetime.now().strftime('%A, %d %B %Y')
-			times=[(datetime.datetime.strptime((t.time + t.period), '%I:%M%p').strftime('%H:%M')) for t in self.tides]
-			x=[datetime.datetime.combine(datetime.date.today(),datetime.time(int(t[0:2]), int(t[3:]))) for t in times]
-			y=[float(t.level) for t in self.tides]
-			pyp.plot_date(x,y,'b')
+			title = self.station.site + ' Tides for ' + datetime.datetime.now().strftime('%A, %d %B %Y')
+			times = [(datetime.datetime.strptime((t.time + t.period), '%I:%M%p')
+				.strftime('%H:%M')) for t in self.tides]
+			x = [datetime.datetime.combine(datetime.date.today(), 
+				datetime.time(int(t[0:2]), int(t[3:]))) for t in times]
+			y = [float(t.level) for t in self.tides]
+			pyp.plot_date(x, y, 'b')
 			pyp.savefig('test.png')
 			pyp.close()
 		

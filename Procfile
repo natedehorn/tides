@@ -1,1 +1,1 @@
-web: gunicorn tides:app
+web: gunicorn tides:APP
