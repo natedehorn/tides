@@ -152,7 +152,7 @@ class TestEmail(unittest.TestCase):
 
 	def test_send_email(self):
 		NOW = datetime.datetime.now()
-		DATE = tc.Date(NOW.day, NOW.month, NOW.year)
+		DATE = tc.Date(NOW.day + 1, NOW.month, NOW.year)
 		TIDES = tc.Tides(tc.Station('SCarolina', '8665099'), DATE)
 		SUBJECT = 'Tides for %s' % (str(DATE))
 		BODY = str(TIDES.tides)
