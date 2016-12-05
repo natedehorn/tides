@@ -71,7 +71,7 @@ class Tides:
 				y=[t.level for t in self.tides],
 				line=dict(shape='spline'))
 		layout = plotly.graph_objs.Layout(
-			title=self.station.site + ' Tides for ' + datetime.datetime.now().strftime('%A, %d %B %Y'),
+			title=self.station.site + ' Tides for ' + (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%A, %d %B %Y'),
 			xaxis=dict(
 				title='Time',
 				autotick=False,
@@ -90,7 +90,7 @@ class Tides:
 
 	def plotnew(self):
 		if hasattr(self, 'tides'):
-			title = self.station.site + ' Tides for ' + datetime.datetime.now().strftime('%A, %d %B %Y')
+			title = self.station.site + ' Tides for ' + (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%A, %d %B %Y')
 			times = [(datetime.datetime.strptime((t.time + t.period), '%I:%M%p')
 				.strftime('%H:%M')) for t in self.tides]
 			x = [datetime.datetime.combine(datetime.date.today(), 
